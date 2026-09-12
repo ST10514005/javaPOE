@@ -14,10 +14,13 @@ public class loginClass {
     public static boolean loginUser() {
         //Declarations of variables 
         String logUserName;
-        String regUserName;
+        String userName;
+        String regUserName = userName;
         String logPassWord;
-        String regPassWord;
+        String passWord;
+        String regPassWord = passWord;
         
+        while(true) {
     Scanner myInput = new Scanner(System.in);
     
     System.out.println("Please enter your username");
@@ -26,25 +29,29 @@ public class loginClass {
     System.out.println("Enter your password");
     logPassWord = myInput.next();
     
-    
-    checkUserName(String userName);
-     checkPasswordComplexity(String passWord);
-    
+    if (validateUsername(logUserName) && validatePassWord(logPassWord)) {
+        
+        System.out.println("Login successful!");
+              return true;
+    } else {
+        
+        System.out.println("Username or passed incorrect.");
+        System.out.println("please try again.");
+        
+    }
    
     }
+    }
     
-    public static boolean validateUsername() {
-            //Declarations
-        String logUserName;
-        String regUserName;
+    public static boolean validateUsername(String logUserName) {
+        
+     
         while(true){
-         
+        String regUserName; 
     if(regUserName.equals(logUserName)) {
         System.out.println("Username matches");
         return true;
-        
-    }
-    else {
+    }else {
         System.out.println("Username incorrect,please try again");
         return false;
     }
@@ -53,7 +60,7 @@ public class loginClass {
     
     }
     
-    public static boolean validatePassword () {
+    public static boolean validatePassWord (String logPassWord) {
         //Declarations
         String regPassWord;
         String logPassWord;
@@ -63,8 +70,7 @@ public class loginClass {
         System.out.println("Password matches");
         return true;
         
-    }
-    else {
+    }else {
         System.out.println("Password incorrect,please try again");
         return false;
     }
