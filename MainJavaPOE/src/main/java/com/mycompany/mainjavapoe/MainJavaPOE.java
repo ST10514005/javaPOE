@@ -23,8 +23,6 @@ public class MainJavaPOE {
         String passWord;
         char character;
           
-        
-        
         System.out.print("Enter name :" + "");
         name = myInput.next();
         
@@ -106,6 +104,26 @@ public class MainJavaPOE {
             }
    
             }
+      public static boolean checkCellPhoneNumber(String cellNum) {
+             
+            while (true) {
+      
+                String countryCode = "+27";
+                boolean hasCountryCode = false;
+                
+                if (cellNum.length() <= 10 && hasCountryCode ) {
+                    System.out.println("Cell phone number is successfully added");
+                    return true;
+                    
+                } 
+                else {
+                    System.out.println("Cellphone number is incorrect or does not contain international code");
+                    
+                    return false;
+                }
+            } 
+            }
+     
          
     
     
