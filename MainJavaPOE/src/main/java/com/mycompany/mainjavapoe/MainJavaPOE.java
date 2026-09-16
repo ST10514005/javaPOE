@@ -44,28 +44,23 @@ public class MainJavaPOE {
             checkPasswordComplexity(passWord);
         
     }
-    public static boolean checkUserName(String userName) 
+    public static String checkUserName(String userName) 
     {
+        Scanner Scanner = new Scanner(System.in);
         
-        while ( true) {
+        while (!(userName.length()<= 5 && userName.contains("_"))) {
             
-            if (userName.length() <= 5 && userName.contains("_")) {
-                System.out.println("Username successfully captured");
-                return true;
-              
+         System.out.println("Username is not correctlty formatted");
+         System.out.println("Please ensure username contains an underscore and is no more five characters");
+         
+         System.out.print("Re-enter username");
+         userName = Scanner.nextLine();
             }
-            
-            else 
-            {
-                System.out.println("Username is not correctly formatted");
-                System.out.println("Please ensure your usename contains an underscore and is no more five characters in length");
-                return false;
-      
-            }
+        System.out.println("Username successfully captured");
+        return "Username is correct";
             
         }
         
-        }
      public static boolean checkPasswordComplexity(String passWord) {
    
         while (true) {
