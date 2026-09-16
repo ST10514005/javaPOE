@@ -15,10 +15,10 @@ public class loginClass {
         //Declarations of variables 
         String logUserName;
         String userName;
-        String regUserName = userName;
+        String regUserName;
         String logPassWord;
         String passWord;
-        String regPassWord = passWord;
+        String regPassWord;
         
         while(true) {
     Scanner myInput = new Scanner(System.in);
