@@ -21,7 +21,8 @@ public class loginClass {
 
     public loginClass() {
     }
-
+//In this login class registered inputs are compared with login inputs
+    //Reference: W3schools-https://www.w3schools.com/js/tryit.asp?filename=tryjs_class_method //
     public loginClass(String name, String surname, String userName, String passWord, String cellNum) {
         this.name = name;
         this.pName = name;
@@ -31,7 +32,7 @@ public class loginClass {
         this.passWord = passWord;
         this.cellNum = cellNum;
     }
-
+//This is the username method with its condition
     public static boolean checkUserName(String userName) {
         if (userName.length() <= 5 && userName.contains("_")) {
             System.out.println("Username successfully captured");
@@ -41,7 +42,7 @@ public class loginClass {
             return false;
         }
     }
-
+//This is the password method with it's conditions
     public static boolean checkPasswordComplexity(String passWord) {
         boolean hasUppercase = false;
         boolean hasNumber = false;
@@ -70,6 +71,7 @@ public class loginClass {
         }
     }
 
+    //This is the cell phone number method with it's conditions
     public static boolean checkCellPhoneNumber(String cellNum) {
         if (cellNum.startsWith("+27") && cellNum.length() == 12) {
             System.out.println("Cell phone number is successfully added");
@@ -99,10 +101,11 @@ public class loginClass {
         return "Welcome " + pName + ", " + gSurname + " it is great to see you.";
     }
 
+    //This is the method that checks if the username and password are correct for the user to log in
     public boolean loginUser(String logUsername, String logPassword) {
         return logUsername.equals(userName) && logPassword.equals(passWord);
     }
-
+//This method simply returns login message whether sucessful or not
     public String returnLoginStatus(boolean isLoggedIn) {
         if (isLoggedIn) {
             // True
