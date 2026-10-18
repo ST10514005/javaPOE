@@ -32,6 +32,15 @@ public class loginClass {
         this.passWord = passWord;
         this.cellNum = cellNum;
     }
+    
+    //Getters so other classes (like message) can use the logged-in user's details
+    public String getUserName() {
+        return userName;
+    }
+    
+    public String getCellNum() {
+        return cellNum;
+    }
 //This is the username method with its condition
     public static boolean checkUserName(String userName) {
         if (userName.length() <= 5 && userName.contains("_")) {
@@ -82,6 +91,9 @@ public class loginClass {
             return false;
         }
     }
+    
+    //Silent validator : no printing, so it can be used anywhere (for example when checking a message recipient)
+   
 
     public String registerUser(String userName, String passWord, String cellNum) {
         if (!checkUserName(userName)) {
