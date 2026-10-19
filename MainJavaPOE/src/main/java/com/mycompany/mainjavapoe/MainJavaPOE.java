@@ -4,7 +4,7 @@
 
 package com.mycompany.mainjavapoe;
 
- import com.mycompany.messages.Messages;
+ 
 
 import java.util.Scanner;
 
@@ -12,10 +12,13 @@ import java.util.Scanner;
  *
  * @author ntoko
  */
+
+//Main class: registration, login and the QuickChat Menu.
 public class MainJavaPOE {
 
     //The method below prompts the user for details and stores them
     public static void main(String[] args) {
+        
         Scanner myInput = new Scanner(System.in);
         
     //===============================================================
@@ -61,6 +64,10 @@ public class MainJavaPOE {
         //Line 66 is basically linking the login class with the variable inputs
         loginClass user = new loginClass(name, surname, userName, passWord, cellNum);
         
+        //=====================================================
+        //LOGIN
+        //=====================================================
+        
         System.out.println("==========================");
         System.out.println("\n---Login---");
         System.out.println("==========================");
@@ -70,192 +77,141 @@ public class MainJavaPOE {
         String logUsername = myInput.next();
         System.out.print("Enter password: ");
         String logPassword = myInput.next();
+        myInput.nextLine().trim();
 
         //Line 74 checks whether username & password are correct, recalls whether the login wprked and 
         //diplay appropriate login message
+        
+        // Check if the username and password are correct and show the message
         boolean isLoggedIn = user.loginUser(logUsername, logPassword);
         System.out.println(user.returnLoginStatus(isLoggedIn));
         
+        
+       //=========================================================================
+       //QUICKCHAT
+       //==========================================================================
+       
         //The user can only message after loggin successfully
         if(isLoggedIn) {
-            //The feature below loads messages from the previous times used (messages.json)
+        
+            System.out.println("\nWelcome to QuickChat.");
             
+            //The user decides how many messages they want to enter
+            System.out.print("How many messages do you wish to enter? ");
             
-            boolean running =true;
+            while(!myInput.hasNextInt()) {
+                System.out.print("Please enter a number: ");
+                myInput.next();
+            } 
+            int numberOfMessages = myInput.nextInt();
+            myInput.nextLine();
             
+                //how many messages have been entered so far
+                int messagesEntered = 0;
+                boolean running = true;
+      
+            // The menu repeats until user chooses Quit
             while (running) {
-                
-                System.out.println("\n==========================");
-                System.out.println("                 QUICKCHAT");
-                System.out.println("============================");
-                
+               
                 System.out.println("\n---Menu---");
-                System.out.println("1) Write a message");
-                System.out.println("2) View sent mesages");
-                System.out.println("3) View stored messages");
-                System.out.println("4) View total messages sent");
-                System.out.println("5) Quit");
-                
+                System.out.println("1) Send Messages");
+                System.out.println("2) Show recentlty sent mesages");
+                System.out.println("3) Quit");
                 System.out.println("Choose an option: ");
                 
-                String userChoice = myInput.next();
-                myInput.nextLine();
-                
+                String userChoice = myInput.nextLine().trim();
+               
                 // The switch statement below structures and conducts the action of the user interms of the gesture they want to take
                 // Switch statements are known for handling option related cases
                 switch (userChoice) {
                     
                     case "1":
                         
-                //=======================================================
-                // WRITE A MESSAGE
-                //=======================================================
-                   
-                        String recipient;
+            //Stop the user from entering more than the set number
+                        if (messagesEntered >= numberOfMessages) {
+                            System.out.println("You have already enterd all" + numberOfMessages + " of your meassages.");
+                            
+                            break;
+                        }
                         
-                        System.out.print("Enter recipient cellphone number: ");
+                        //Keep going until the set number of messages is entered
+                  
+                       while (messagesEntered < numberOfMessages) {
+                          System.out.println("\n---- Message " + (messagesEntered + 1) + " of " + numberOfMessages + "---");
+                       
                         
+                // Recipient cell number
+                       
+                    System.out.print("Enter recipient cell number: ");
+                    String recipient = myInput.nextLine().trim();
+                    
+                    while(!Messages.isValidRecipient(recipient)) {
+                        System.out.println("Cell phone number is incorrectly formatted" + "or does not contain an international code.");
+                        System.out.println("It must star with +27 followed by 9 digits.");
+                        System.out.print("Re-enter recipient cell number:");
                         recipient = myInput.nextLine().trim();
-                        
-                        while (!messages.isValidRecipient(recipient)) {
-                            
-                            System.out.println("Invalid cellphone.");
-                            
-                            System.out.println("The number must start with +27 "
-                            + "and contain 9 digits after it.");
-                            
-                            System.out.print("Re-enter recipient cellphone number");
-                            
-                            recipient = myInput.nextLine().trim();
-                            
-                        }
-                        
-                        //Enter message content
-                        String messageText;
-                        
-                        System.out.print("Enter your message");
-                        messageText = myInput.nextLine();
-                        
-                        while (messageText.trim().isEmpty() || messageText.length() > 250) {
-                            
-                            if (messageText.trim().isEmpty()) {
-                                
-                                System.out.print("The message cannot be empty.");
-                                
-                            }else {
-                                
-                                System.out.println("The message must exceed" + "250 character");
+                    }
+                    
+                    // Message text (not empty and not more than 250 characters)
+                            System.out.print("Enter your message: ");
+                            String messageText = myInput.nextLine();
+ 
+                            while (messageText.trim().isEmpty()
+                                    || !Messages.isValidMessageLength(messageText)) {
+ 
+                                if (messageText.trim().isEmpty()) {
+                                    System.out.println("The message cannot be empty.");
+                                } else {
+                                    System.out.println("Please enter a message of less than 250 characters.");
+                                }
+ 
+                                System.out.print("Enter your message again: ");
+                                messageText = myInput.nextLine();
                             }
+                    //Create the message (the ID, number and hash are made auatomatically)
                             
-                            System.out.print("Enter your message again: ");
+                            Messages newMessages = new Messages(recipient, messageText);
                             
-                            messageText = myInput.nextLine();
-                      
+                   // Check the message ID
+                            if(!newMessages.checkMessageID()) {
+                                System.out.println("Message ID must be no more than ten characters.");
+                                break;
                             }
-                        // Generate a unique ID
-                        String messageId = Messages.createUniqueMessageId();
+                            // Show the message details
+                            System.out.println("\n--- Message Details ---");
+                            System.out.println("Message ID: " + newMessages.getMessageId());
+                            System.out.println("Message Hash: " + newMessages.getMessageHash());
+                            System.out.println(newMessages.checkRecipientCell());
+ 
+                            // Send, store or delete the message
+                            System.out.println(newMessages.SentMessage(myInput));
+ 
+                            messagesEntered++;
+                       }
+                            break;
+                            
+                    case "2":
+                        System.out.println("Coming Soon");
+                        break;
                         
-                        
-                        //Assign a message number
-                        //This first message number is 0
-                        int messageNum = 0;
-                        
-                        //Create the message object
-                        Messages newMessage = new Messages (messageId, messageNum, recipient, messageText,user.getUserName());
-                        }
-                
-                //Validate the generated ID
-                if (!newMessage.checkMessageId()){
-                    
-                    System.out.println("Message ID validation failed");
-                    
-                    break;
-                    
-                }
-                
-                //Diplay message details
-                System.out.println("\n----Message Details ---");
-                
-                System.out.println("Message ID: " + newMessage.getMessageId());
-                
-                System.out.println("Message Hash: " + newMessage.getMessageHash
-                      
-                System.out.println(newMessage.checkRecipient());
-                
-                //let the user choose what to do
-                System.out.println(newMessage.checkRecipient());
-                
-                  break;
-                  
-                  case "2":
-                  
-                  //Display messages sent this session
-                  
-                Messages displayMessages =
-                            new Messages(
-                                    "0000000000",
-                                    0,
-                                    "+27000000000",
-                                    "Display",
-                                    user.getUserName()
-                            );
-
-                    System.out.println(
-                            displayMessages.printMessages());
-
-                    break;
-                    
                     case "3":
-
-                    // Display messages stored in JSON
-                    System.out.println(
-                            Messages.printStoredMessages());
-
-                    break;
-
-                case "4":
-
-                    // Display total sent messages
-                    Messages countMessages =
-                            new Messages(
-                                    "0000000000",
-                                    0,
-                                    "+27000000000",
-                                    "Count",
-                                    user.getUserName()
-                            );
-
-                    System.out.println(System.out.println(
-                            "Total messages sent this session: "
-                            + countMessages.returnTotalMessages());
-
-                    break;
-
-                case "5":
-
-                    running = false;
-
-                    System.out.println(
-                            "Thank you for using QuickChat!");
-
-                    break;
-
-                default:
-
-                    System.out.println(
-                            "Invalid option. Please select "
-                            + "a number between 1 and 5.");
-
-                    break;
-            }
-        }
-
-        myInput.close();
-    }
-            }
-        
-      
-                }
-            }
+                        running = false;
+                        System.out.println("Thank you for using QuickChat.");
+                        break;
+                        
+                    default:
+                        System.out.println("Invalid option. Please choose 1, 2 or 3.");
+                        
+                        break;
+                            
+                            }
+                                
+                        }
+                    }
+                  myInput.close();
+ 
+                    }
+                } 
+              
         
     
