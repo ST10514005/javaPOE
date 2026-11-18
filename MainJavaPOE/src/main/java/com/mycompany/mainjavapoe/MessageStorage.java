@@ -16,6 +16,9 @@ import java.io.FileReader;
  * @author ntoko
  */
 
+
+// THIS IS THE CONTENT OF JSON FILE BELOW
+
 //MessageStorage only saves messages to the message.json file,
 // the message class does not need any JSon code
 public class MessageStorage {
@@ -72,72 +75,69 @@ public class MessageStorage {
     // It does the same job as saveMessages, but the details come from the
     // lists of text instead of Messages objects.
     public static void saveStoredLists() {
-        
-        try (FileWriter writer = new FileWriter(FILE_NAME)) {
-            
-            writer.write("[\n");
-           
-            //One loop for every stored message (position i is the same message in every lists)
-            
-            for (int i = 0; i < storedMessages.messageIds.size(); i++) {
-                
-            }
-                writer.write("    \n");
-                writer.write("    \"messageId\": \"" + clean(storedMessages.messageIds.get(i)) + "\",\n");
-                writer.write("    \"messageNum\": " + storedMessages.messageNums.get(i) + ",\n");
-                writer.write("    \"recipientCell\": \"" + clean(StoredMessages.recipients.get(i)) + "\",\n");
-                writer.write("    \"message\": \"" + clean(StoredMessages.storedMessages.get(i)) + "\",\n");
-                writer.write("    \"messageHash\": \"" + clean(StoredMessages.messageHashes.get(i)) + "\"\n");
-               
-            //A comma between messages, but not after the last one
-            if (i < storedMessages.messageIDs.size() - 1) {
-                
-               writer.write("   }, \n");
+    try (FileWriter writer = new FileWriter(FILE_NAME)) {
+        writer.write("[\n");
+        for (int i = 0; i < StoredMessages.messageIds.size(); i++) {
+            writer.write("  {\n");
+            writer.write("    \"messageId\": \"" + clean(StoredMessages.messageIds.get(i)) + "\",\n");
+            writer.write("    \"messageNum\": " + StoredMessages.messageNums.get(i) + ",\n");
+            writer.write("    \"recipientCell\": \"" + clean(StoredMessages.recipients.get(i)) + "\",\n");
+            writer.write("    \"message\": \"" + clean(StoredMessages.storedMessages.get(i)) + "\",\n");
+            writer.write("    \"messageHash\": \"" + clean(StoredMessages.messageHashes.get(i)) + "\"\n");
+            if (i < StoredMessages.messageIds.size() - 1) {
+                writer.write("  },\n");
             } else {
-                writer.write("   }\n");
+                writer.write("  }\n");
             }
         }
-        
         writer.write("]\n");
-        
     } catch (IOException exception) {
-                System.out.println("Error saving messages: " + exception.getMessges());
-                }
-    
+        System.out.println("Error saving messages: " + exception.getMessage());
+    }
+}
+
     public static void loadMessages() {
-        
-        StoredMessages.messageIds.clear();
-        StoredMessages.messageNums.clear();
-        StoredMessage.recipient.clear();
-        StoredMessages.storedMessages.clear();
-        StoredMessages.messageHashes.clear();
-        
-        try (BufferedReader reader = new BufferedReader (new FileReader(FILE_NAME))) {
-            
-            String line = reader.readLine();
-            
-            while (line != null) {
-                
-                line = line.trim();
-                
-                if (line.startsWith("\"messageId\"")) {
-                    StoredMessages.messageIds.add(getValue(line));
-                } else if (line.startsWith("\"messageNum\"")) {
-                    StoredMessage.messageNums.add(getValue(line));
-                } else if (line.startsWith("\"recipientCell\"")) {
-                   StoredMessages.recipients.add(getValue(line));
-                } else if (line.startsWith("\"message\"")) {
-                    StoredMessages.storedMessages.add(getValue(line));
-                } else if (line.startsWith("\"messageHash\"")) {
-                    StoredMessages.messageHashes.add(getValue(line));
-                    
-                }
-                
-                line = reader.readLine();
+    StoredMessages.messageIds.clear();
+    StoredMessages.messageNums.clear();
+    StoredMessages.recipients.clear();
+    StoredMessages.storedMessages.clear();
+    StoredMessages.messageHashes.clear();
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+        String line = reader.readLine();
+        while (line != null) {
+            line = line.trim();
+            if (line.startsWith("\"messageId\"")) {
+                StoredMessages.messageIds.add(getValue(line));
+            } else if (line.startsWith("\"messageNum\"")) {
+                StoredMessages.messageNums.add(getValue(line));
+            } else if (line.startsWith("\"recipientCell\"")) {
+                StoredMessages.recipients.add(getValue(line));
+            } else if (line.startsWith("\"message\"")) {
+                StoredMessages.storedMessages.add(getValue(line));
+            } else if (line.startsWith("\"messageHash\"")) {
+                StoredMessages.messageHashes.add(getValue(line));
+            }
+            line = reader.readLine();
         }
+    } catch (FileNotFoundException exception) {
+        // No file yet, so there is nothing to load
+    } catch (IOException exception) {
+        System.out.println("Error reading messages: " + exception.getMessage());
     }
+}
+
+private static String getValue(String line) {
+    String value = line.substring(line.indexOf(":") + 1).trim();
+    if (value.endsWith(",")) {
+        value = value.substring(0, value.length() - 1);
     }
-  
+    if (value.startsWith("\"") && value.endsWith("\"")) {
+        value = value.substring(1, value.length() - 1);
+    }
+    return value.replace("\\\"", "\"").replace("\\\\", "\\");
+}
+    
     // clean: puts a backslash before \ and " so the text is valid inside JSON.
     // Without this, a quote in a message would break the JSON file.
     private static String clean(String text) {
