@@ -12,12 +12,5 @@
     "recipientCell": "+27834484567",
     "message": "Yohoooo, I am at your gate.",
     "messageHash": "00:2:YOHOOOOGATE"
-  },
-  {
-    "messageId": "0838884567",
-    "messageNum": 3,
-    "recipientCell": "0838884567",
-    "message": "It is dinner time!",
-    "messageHash": "08:3:ITTIME"
   }
 ]
