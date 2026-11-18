@@ -199,8 +199,13 @@ public class MainJavaPOE {
                         System.out.println("Thank you for using QuickChat.");
                         break;
                         
+                    case "4":
+                        StoredMessages storedMenu = new StoredMessages(usernName);
+                        storedMenu.showMenu(myInput);
+                        break;
+                        
                     default:
-                        System.out.println("Invalid option. Please choose 1, 2 or 3.");
+                        System.out.println("Invalid option. Please choose 1, 2, 3, or 4.");
                         
                         break;
                             
