@@ -11,23 +11,20 @@ import java.util.Scanner;
  *
  * @author ntoko
  */
-public class storedMessages {
+public class StoredMessages {
     
-    public static ArrayList<String> sentMessagees = new ArrayList<>();
-    public static ArrayList<String> disregarededMessages = new ArrayList<>();
-   //Declaration of Variable
-   public static ArrayList<String> sentMessages = new ArrayList<>();
-   public static ArrayList<String> disregardMessages = new ArrayList<>();
+    public static ArrayList<String> sentMessages = new ArrayList<>();
+    public static ArrayList<String> disregardedMessages = new ArrayList<>();
    public static ArrayList<String> storedMessages = new ArrayList<>();
    public static ArrayList<String> messageHashes = new ArrayList<>();
-   public static ArrayList<String> messageIDs = new ArrayList<>();
-   public static ArrayList<String> senders = new ArrayList<>();
-   public static ArrayList<String> recipeints = new ArrayList<>();
+   public static ArrayList<String> messageIds = new ArrayList<>();
+   public static ArrayList<String> messageNums = new ArrayList<>();
+   public static ArrayList<String> recipients = new ArrayList<>();
    
    private String sender;
    
    public StoredMessages(String sender) {
-       this sender = sender;
+       this.sender = sender;
    }
    
     public String displaySendersAndRecipients() {
@@ -39,7 +36,7 @@ public class storedMessages {
         String output = "";
         
         for (int i = 0; i < storedMessages.size(); i++) {
-            output = output + "\nSender: " + sender + "\nRecipient: " + recipient.get(i)
+            output = output + "\nSender: " + sender + "\nRecipient: " + recipients.get(i)
                     + "\n-----------------------------------------";
         }
         
@@ -48,19 +45,19 @@ public class storedMessages {
     
     public String displayLongestMessage() {
         
-        if (storedMessages.size() == 0) {
+        if (storedMessages.isEmpty()) {
             return "No stored message.";
         }
         
         int longestPosition = 0;
         
         for(int i = 1; i < storedMessages.size(); i++) {
-            if (storedMessages.get(i).length() > storedMessages.get(longestPostion).length()) {
+            if (storedMessages.get(i).length() > storedMessages.get(longestPosition).length()) {
                 longestPosition = i;
                 
             }
         }
-        return "Longet stored message: " + storedMessages.get(longestPosition);
+        return "Longest stored message: " + storedMessages.get(longestPosition);
         
     }
     
@@ -99,6 +96,8 @@ public class storedMessages {
         
         for (int i = 0; i < messageHashes.size(); i++) {
             
+            System.out.println("Typed: [" + hash + "] Stored: [" + messageHashes.get(i) + "]");
+            
             if (messageHashes.get(i).equalsIgnoreCase(hash)) {
                 
                 String deleted = storedMessages.get(i);
@@ -107,7 +106,7 @@ public class storedMessages {
                 messageNums.remove(i);
                 recipients.remove(i);
                 storedMessages.remove(i);
-                messagesHashes.remove(i);
+                messageHashes.remove(i);
                 
                 MessageStorage.saveStoredLists();
                 
@@ -115,7 +114,7 @@ public class storedMessages {
                 
             }
         }
-        return "Message hash not found.";
+        return "Message hash not found";
     }
     public String displayReport() {
         
@@ -126,8 +125,8 @@ public class storedMessages {
         String output = "=========Stored messages report======";
         
         for (int i = 0; i < storedMessages.size(); i++) {
-            output = output + "nMessage ID: " + messageIds.get(i)
-                    + "\nMessage Hash: " + messagesHashes.get(i)
+            output = output + "\nMessage ID: " + messageIds.get(i)
+                    + "\nMessage Hash: " + messageHashes.get(i)
                     +"\nSender: " + sender
                     +"\nRecipient: " + recipients.get(i)
                     +"\nMessage: " + storedMessages.get(i)
@@ -170,7 +169,7 @@ public class storedMessages {
             switch (choice) {
                 
                 case"a":
-                    System.out.prinln(displaySenderAndRecipients());
+                    System.out.println(displaySendersAndRecipients());
                     break;
                     
                 case"b":
@@ -192,7 +191,7 @@ public class storedMessages {
                 case "e":
                     System.out.print("Enter the message hash: ");
                     String hash = input.nextLine().trim();
-                    System.out.println(deletByHash(hash));
+                    System.out.println(deleteByHash(hash));
                     break;
                     
                 case "f":
