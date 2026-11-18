@@ -246,7 +246,8 @@ public class Messages {
                     return "Message successfully stored.";
  
                 case "0":
-                     // Delete: the message is not added to any list
+                     // Delete: the message is not sent, but we keep in the disregarded list
+                    storedMessages.disregardedMessages.add(message);
                     return "Press 0 to delete the message.";
  
                 default:
@@ -266,7 +267,20 @@ public class Messages {
     // The JSON code is in MessageStorage so this class stays simple.
     public void storeMessage() {
         storedMessages.add(this);
-        MessageStorage.saveMessages(storedMessages);
+        
+        // Line 272 reads the messages that are already in message.json into the lists
+        MessageStorage.loadMessages();
+        
+        // The lines below add the message created to the lists
+        storedMessages.messageIds.add(messageId);
+        storedMessages.messageNums.add(String.valueOf(messageNum));
+        storedMessages.recipients.add(recipientCell);
+        storedMessages.storedMessages.add(message);
+        storedMessages.messageHashes.add(messageHash);
+        
+        //writes all the list back into message.json
+        MessageStorage.saveStoredLists();
+        
     }
  
     //=====================================================
@@ -299,8 +313,6 @@ public class Messages {
         return output;
     }
  
-   
-    
     // returnTotalMessages: returns how many messages have been sent.
     // That is the same as the size of the sent list.
     public static int returnTotalMessages() {
