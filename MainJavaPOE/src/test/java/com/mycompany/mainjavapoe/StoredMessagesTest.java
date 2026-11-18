@@ -53,6 +53,9 @@ public class StoredMessagesTest {
      */
     @BeforeEach
     public void setUp() {
+        // Stop the tests from overwriting message.json
+        MessageStorage.saveEnabled = false;
+
         StoredMessages.resetLists();
         instance = new StoredMessages("Developer");
 
