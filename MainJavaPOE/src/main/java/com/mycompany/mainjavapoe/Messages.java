@@ -247,8 +247,8 @@ public class Messages {
  
                 case "0":
                      // Delete: the message is not sent, but we keep in the disregarded list
-                    storedMessages.disregardedMessages.add(message);
-                    return "Press 0 to delete the message.";
+                    StoredMessages.disregardedMessages.add(message);
+                    return "Message deleted.";
  
                 default:
                       // Wrong choice: print an error and the loop asks again
@@ -266,23 +266,15 @@ public class Messages {
     // MessageStorage class to save the whole list in message.json.
     // The JSON code is in MessageStorage so this class stays simple.
     public void storeMessage() {
-        storedMessages.add(this);
-        
-        // Line 272 reads the messages that are already in message.json into the lists
-        MessageStorage.loadMessages();
-        
-        // The lines below add the message created to the lists
-        storedMessages.messageIds.add(messageId);
-        storedMessages.messageNums.add(String.valueOf(messageNum));
-        storedMessages.recipients.add(recipientCell);
-        storedMessages.storedMessages.add(message);
-        storedMessages.messageHashes.add(messageHash);
-        
-        //writes all the list back into message.json
-        MessageStorage.saveStoredLists();
-        
-    }
- 
+    storedMessages.add(this);
+    MessageStorage.loadMessages();
+    StoredMessages.messageIds.add(messageId);
+    StoredMessages.messageNums.add(String.valueOf(messageNum));
+    StoredMessages.recipients.add(recipientCell);
+    StoredMessages.storedMessages.add(message);
+    StoredMessages.messageHashes.add(messageHash);
+    MessageStorage.saveStoredLists();
+}
     //=====================================================
     // PRINT AND COUNT SENT MESSAGES
     //=====================================================
