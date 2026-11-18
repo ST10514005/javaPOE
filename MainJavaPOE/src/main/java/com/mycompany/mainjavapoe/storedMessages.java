@@ -137,7 +137,7 @@ public class StoredMessages {
         
         for (int i = 0; i < messageHashes.size(); i++) {
             
-            System.out.println("Typed: [" + hash + "] Stored: [" + messageHashes.get(i) + "]");
+            
             
             if (messageHashes.get(i).equalsIgnoreCase(hash)) {
                 
