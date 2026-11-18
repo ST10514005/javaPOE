@@ -117,6 +117,7 @@ public class MainJavaPOE {
                 System.out.println("1) Send Messages");
                 System.out.println("2) Show recentlty sent mesages");
                 System.out.println("3) Quit");
+                System.out.println("4) Stored messages");
                 System.out.println("Choose an option: ");
                 
                 String userChoice = myInput.nextLine().trim();
@@ -129,7 +130,7 @@ public class MainJavaPOE {
                         
             //Stop the user from entering more than the set number
                         if (messagesEntered >= numberOfMessages) {
-                            System.out.println("You have already enterd all" + numberOfMessages + " of your meassages.");
+                            System.out.println("You have already enterd all: " + numberOfMessages + " of your meassages.");
                             
                             break;
                         }
@@ -191,7 +192,8 @@ public class MainJavaPOE {
                             break;
                             
                     case "2":
-                        System.out.println("Coming Soon");
+                        System.out.println(Messages.printMessages());
+                        System.out.println("Total messages sent: " + Messages.returnTotalMessages());
                         break;
                         
                     case "3":
@@ -200,7 +202,7 @@ public class MainJavaPOE {
                         break;
                         
                     case "4":
-                        StoredMessages storedMenu = new StoredMessages(usernName);
+                        StoredMessages storedMenu = new StoredMessages(userName);
                         storedMenu.showMenu(myInput);
                         break;
                         
